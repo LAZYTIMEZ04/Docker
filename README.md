@@ -1,6 +1,6 @@
 <h1>คำสั่งรัน / ลบ</h1>
 docker-compose up <br>
-docker-compose down -v
+docker-compose down
 
 <h1>ทดสอบ Mysql สร้างตาราง</h1>
  
