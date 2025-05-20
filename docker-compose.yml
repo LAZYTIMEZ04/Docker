@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  php-apache-environment:
+    container_name: php-apache
+    build: 
+      context: ./php
+      dockerfile: Dockerfile
+    depends_on:
+      - db
+    volumes:
+      - ./php/src:/var/www/html/
+      - ./php.ini:/usr/local/etc/php/conf.d/99-custom.ini
+    ports:
+      - 8080:80
+
+  db:
+    container_name: db
+    image: mysql
+    restart: always
+    environment:
+      MYSQL_ALLOW_EMPTY_PASSWORD: "yes"  
+    ports:
+      - "3306:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8000:80"
+    restart: always
+    environment:
+      PMA_HOST: db
+      PMA_USER: root
+      PMA_PASSWORD: ""
+      UPLOAD_LIMIT: 300M    # Added to increase upload limit
+    volumes:
+      - ./php.ini:/usr/local/etc/php/conf.d/99-custom.ini
+    depends_on:
+      - db
+
+volumes:
+  mysql_data:
